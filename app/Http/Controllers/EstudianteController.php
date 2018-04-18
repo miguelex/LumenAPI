@@ -1,15 +1,23 @@
 <?php namespace App\Http\Controllers;
 
+use App\Estudiante;
+
 class EstudianteController extends Controller {
 
 	public function index() {
 
-		return 'desde index en estudiantecontroller';
+		$estudiantes = Estudiante::all();
+		return $this->crearRespuesta($estudiantes, 200);
 	}
 
-	public function show() {
+	public function show($id) {
+	
+		$estudiante = Estudiante::find($id);
+		if ($estudiante){
+			return $this->crearRespuesta($estudiante, 200);	
+		}
 		
-		return 'desde show en estudiantecontroller';
+		return $this->crearRespuestaErronea('Estudiante no encontrado', 404);
 	}
 
 	public function store() {

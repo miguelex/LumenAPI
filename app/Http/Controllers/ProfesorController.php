@@ -1,15 +1,23 @@
 <?php namespace App\Http\Controllers;
 
+use App\Profesor;
+
 class ProfesorController extends Controller {
 
 	public function index() {
 
-		return 'desde index en profesorcontroller';
+		$profesores = Profesor::all();
+		return $this->crearRespuesta($profesores, 200);
 	}
 
-	public function show() {
+	public function show($id) {
+	
+		$profesor = Profesor::find($id);
+		if ($profesor){
+			return $this->crearRespuesta($profesor, 200);	
+		}
 		
-		return 'desde show en profesorcontroller';
+		return $this->crearRespuestaErronea('Profesor no encontrado', 404);
 	}
 
 	public function store() {

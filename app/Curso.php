@@ -15,6 +15,6 @@ class Curso extends Model{
 
 	public function estudiantes() {
 
-		return $this->belongsToMany('App\Estudiantes');
+		return $this->belongsToMany('App\Estudiante');
 	}
 }

@@ -12,13 +12,13 @@ class CursoEstudianteMigration extends Migration
      */
     public function up()
     {
-        Schema::create('curso_estudiantes', function (Blueprint $table) {
+        Schema::create('curso_estudiante', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('estudiante_id')->unsigned();
             $table->integer('curso_id')->unsigned();
             $table->foreign('estudiante_id')->references('id')->on('estudiantes');
             $table->foreign('curso_id')->references('id')->on('cursos');
-            $table->timestamps();
+            //$table->timestamps();
         });
     }
 
@@ -29,6 +29,6 @@ class CursoEstudianteMigration extends Migration
      */
     public function down()
     {
-        Schema::drop('curso_estudiantes');
+        Schema::drop('curso_estudiante');
     }
 }

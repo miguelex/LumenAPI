@@ -1,0 +1,19 @@
+ip: 192.168.10.13
+memory: 2048
+cpus: 1
+provider: virtualbox
+authorize: ~/.ssh/id_rsa.pub
+keys:
+    - ~/.ssh/id_rsa
+folders:
+    -
+        map: 'C:\LumenAPI'
+        to: /home/vagrant/lumenapi
+sites:
+    -
+        map: lumenapi.com
+        to: /home/vagrant/lumenapi/public
+databases:
+    - homestead
+name: lumenapi
+hostname: lumenapi

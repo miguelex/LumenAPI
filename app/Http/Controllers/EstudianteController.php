@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use App\Estudiante;
+use Illuminate\Http\Request;
 
 class EstudianteController extends Controller {
 
@@ -20,18 +21,64 @@ class EstudianteController extends Controller {
 		return $this->crearRespuestaErronea('Estudiante no encontrado', 404);
 	}
 
-	public function store() {
+	public function store(Request $request) {
 		
-		return 'desde store en estudiantecontroller';
+		$this->validacion($request);
+
+		Estudiante::create($request->all());
+		
+		return $this->crearRespuesta('El estudiante ha sido creado correctamente', 201);
 	}
 
-	public function update() {
+	public function update(Request $request, $estudiante_id) {
 		
-		return 'desde update en estudiantecontroller';
+		$estudiante = Estudiante:: find($estudiante_id);
+
+		if ($estudiante) {
+			$this->validacion($request);
+
+			$nombre = $request->get('nombre');
+			$direccion = $request->get('direccion');
+			$telefono = $request->get('telefono');
+			$carrera = $request->get('carrera');
+
+			$estudiante->nombre = $nombre;
+			$estudiante->direccion = $direccion;
+			$estudiante->telefono = $telefono;
+			$estudiante->carrera = $carrera;
+
+			$estudiante->save();
+
+			return $this->crearRespuesta("El estudiante $estudiante->id ha sido editado", 200);
+
+		}
+
+		return $this->crearRespuestaErronea('El id especificado no corresponde a un estudiante', 404);
 	}
 
-	public function destroy() {
+	public function destroy($estudiante_id) {
 		
-		return 'desde destroy en estudiantecontroller';
+		$estudiante = Estudiante::find($estudiante_id);
+		if($estudiante)
+		{
+			$estudiante->cursos()->sync([]);
+			$estudiante->delete();
+			return $this->crearRespuesta('El estudiante ha sido eliminado', 200);
+		}
+		return $this->crearRespuestaErrornea('No existe estudiante con el id especificado', 404);
+	}
+
+	public function validacion($request){
+
+		$reglas = [
+			'nombre' => 'required',
+			'direccion' => 'required',
+			'telefono' => 'required|numeric',
+			'carrera' => 'required|in:ingeniería,matemática,física',
+
+		];
+
+
+		$this->validate($request, $reglas);
 	}
 }

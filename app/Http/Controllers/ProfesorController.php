@@ -2,6 +2,8 @@
 
 use App\Profesor;
 
+use Illuminate\Http\Request;
+
 class ProfesorController extends Controller {
 
 	public function index() {
@@ -20,18 +22,68 @@ class ProfesorController extends Controller {
 		return $this->crearRespuestaErronea('Profesor no encontrado', 404);
 	}
 
-	public function store() {
+	public function store(Request $request) {
 		
-		return 'desde store en profesorcontroller';
+		$this->validacion($request);
+
+		Profesor::create($request->all());
+		
+		return $this->crearRespuesta('El profesor ha sido creado correctamente', 201);
 	}
 
-	public function update() {
+	public function update(Request $request, $profesor_id) {
 		
-		return 'desde update en profesorcontroller';
+		$profesor = Profesor:: find($profesor_id);
+
+		if ($profesor) {
+			$this->validacion($request);
+
+			$nombre = $request->get('nombre');
+			$direccion = $request->get('direccion');
+			$telefono = $request->get('telefono');
+			$profesion = $request->get('profesion');
+
+			$profesor->nombre = $nombre;
+			$profesor->direccion = $direccion;
+			$profesor->telefono = $telefono;
+			$profesor->profesion = $profesion;
+
+			$profesor->save();
+
+			return $this->crearRespuesta("El profesor $profesor->id ha sido editado", 200);
+
+		}
+
+		return $this->crearRespuestaErronea('El id especificado no corresponde a un profesor', 404);
+
 	}
 
-	public function destroy() {
+	public function destroy($profesor_id) {
 		
-		return 'desde destroy en profesorcontroller';
+		$profesor = Profesor::find($profesor_id);
+		if($profesor)
+		{
+			if(sizeof($profesor->cursos) > 0)
+			{
+				return $this->crearRespuestaErronea('El profesor tiene cursos asociados. Se deben eliminar estos cursos previamente', 409);
+			}
+			$profesor->delete();
+			return $this->crearRespuesta('El profesor ha sido eliminado', 200);
+		}
+		return $this->crearRespuestaErronea('No existe profesor con el id especificado', 404);
+	}
+
+	public function validacion($request){
+
+		$reglas = [
+			'nombre' => 'required',
+			'direccion' => 'required',
+			'telefono' => 'required|numeric',
+			'profesion' => 'required|in:ingeniería,matemática,física',
+
+		];
+
+
+		$this->validate($request, $reglas);
 	}
 }

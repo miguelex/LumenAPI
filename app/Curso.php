@@ -6,7 +6,7 @@ class Curso extends Model{
 	
 	protected $fillable = ['titulo', 'descripcion', 'valor', 'profesor_id'];
 
-	protected $hidden = ['id', 'create_at', 'update_at'];
+	
 
 	public function profesor(){
 

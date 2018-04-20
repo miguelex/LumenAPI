@@ -18,7 +18,7 @@ class CursoEstudianteMigration extends Migration
             $table->integer('curso_id')->unsigned();
             $table->foreign('estudiante_id')->references('id')->on('estudiantes');
             $table->foreign('curso_id')->references('id')->on('cursos');
-            //$table->timestamps();
+            //$table->nullableTimestamps();
         });
     }
 

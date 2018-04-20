@@ -6,7 +6,7 @@ class Estudiante extends Model{
 	
 	protected $fillable = ['nombre', 'direccion', 'telefono', 'carrera'];
 
-	protected $hidden = ['id', 'create_at', 'update_at'];
+	
 
 	public function estudiantes() {
 

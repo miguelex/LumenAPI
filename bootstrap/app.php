@@ -21,7 +21,7 @@ $app = new Laravel\Lumen\Application(
 
 class_alias(Illuminate\Support\Facades\Config::class, 'Config');
 
-$app->withFacades();
+//$app->withFacades();
 
 $app->withEloquent();
 
